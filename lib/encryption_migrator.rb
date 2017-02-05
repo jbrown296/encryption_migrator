@@ -24,7 +24,7 @@ module EncryptionMigrator
 end
 
 class ActiveRecord::Migration
-  def unencrypt_field(model, column, key:)
+  def unencrypt_field(model, column, key:, iv:)
     const = EncryptionMigrator.constant_for(model)
     encrypted_sym = :"encrypted_#{column}"
 
@@ -32,7 +32,7 @@ class ActiveRecord::Migration
     const.reset_column_information
 
     const.all.each do |row|
-      EncryptionMigrator.decrypt_and_update_row(row, const, column, key)
+      EncryptionMigrator.decrypt_and_update_row(row, const, column, key, iv)
     end
 
     remove_column model, encrypted_sym
