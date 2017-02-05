@@ -5,9 +5,9 @@ module EncryptionMigrator
     model.to_s.singularize.camelize.constantize
   end
 
-  def self.define_class_with_encrypted(const, attr, encrypted_attr, key)
+  def self.define_class_with_encrypted(const, attr, encrypted_attr, key, iv)
     const.class_eval do
-      attr_encrypted attr, key: key, attribute: encrypted_attr
+      attr_encrypted attr, key: key, attribute: encrypted_attr, iv: encrypted_attr_iv
     end
   end
 
